@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace DES_Algorithm
+namespace BitArray_Extensions
 {
     public static class BitArray_Ext
     {
@@ -33,7 +33,15 @@ namespace DES_Algorithm
             }
 
             return result;
-
+        }
+        /// <summary>
+        /// Make sure on your own if out.Lenght == L.Lenght + R.Lenght!!!
+        /// </summary>
+        public static void UniteInto(BitArray L, BitArray R, BitArray @out){
+            for(int i = 0; i < L.Length; i++){
+                @out[i] = L[i];
+                @out[L.Length + i] = R[i-L.Length];
+            }
         }
         
 
@@ -41,6 +49,7 @@ namespace DES_Algorithm
         public static BitArray CycleShiftLeft(this BitArray self)
         {
             // 1000 <<1 => 0001  0000
+            self = new BitArray(self);
             var length = self.Length;
             bool temp;
             for(int i = 0; i < length - 1; i++)
@@ -50,6 +59,13 @@ namespace DES_Algorithm
                 self[i +1] = temp;
             }
             return self;
+        }
+
+        // Optimised way of copying BitArrays.
+        public static void CopyTo(this BitArray self, BitArray copy)
+        {
+            for(int i = 0; i < self.Length; i++)
+                copy[i] = self[i];
         }
     }
 }
