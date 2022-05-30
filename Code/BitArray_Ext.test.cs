@@ -6,6 +6,20 @@ namespace BitArray_Extensions
     public class BitArray_Ext_Test
     {
 
+    #region >>> BitArray_Ext.ToByteArray() <<<
+        [Fact]
+        public void ToByteArray_ShouldWork()
+        {
+            // Arrange:
+            BitArray toConvert = new BitArray(new byte[]{0b00111001});
+            // Act:
+            var result = toConvert.ToByteArray();
+            // Assert:
+            var expected = new byte[]{0b00111001};
+            Assert.Equal(expected, result);
+        }
+    #endregion >>> BitArray_Ext.Split() <<<
+
     #region >>> BitArray_Ext.Split() <<<
         [Fact]
         public void Split_ShouldWork()

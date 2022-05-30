@@ -34,11 +34,11 @@ public static partial class DES_Algorithm
         // Also we can avoid unnecessary allocations with giving each task direct access to input memory, note that this
         //  would make this algorithm mutable, but i copy input in it's normalization.
 
-        int blockCount = result.Length % 8;
+        int blockCount = result.Length / 8;
         List<Task> tasks = new(blockCount);
         for (var i = 0; i < blockCount; i++) {
             int k = i;
-            tasks[i] = Task.Run(() => HashBlock(subKeys, result.AsSpan().Slice(k * 8, 8), inverse));
+            tasks.Add(Task.Run(() => HashBlock(subKeys, result.AsSpan().Slice(k * 8, 8), inverse)));
         }
         Task.WaitAll(tasks.ToArray());
 
@@ -49,7 +49,7 @@ public static partial class DES_Algorithm
     }
 
     #region >>> Key permutation tables <<<
-    private static readonly byte[] PC_1 = {
+    private static readonly byte[] PC_1 = new byte[] {
         57, 49, 41, 33, 25, 17, 9,
         1,  58, 50, 42, 34, 26, 18,
         10, 2,  59, 51, 43, 35, 27,
@@ -58,8 +58,8 @@ public static partial class DES_Algorithm
         7,  62, 54, 46, 38, 30, 22,
         14, 6,  61, 53, 45, 37, 29,
         21, 13, 5,  28, 20, 12, 4,
-    };
-    private static readonly byte[] PC_2 = {
+    }.Select(item => (byte)(item-1)).ToArray();
+    private static readonly byte[] PC_2 = new byte[] {
         14, 17, 11, 24,  1,  5,
          3, 28, 15,  6, 21, 10,
         23, 19, 12,  4, 26,  8,
@@ -68,7 +68,7 @@ public static partial class DES_Algorithm
         30, 40, 51, 45, 33, 48,
         44, 49, 39, 56, 34, 53,
         46, 42, 50, 36, 29, 32,
-    };
+    }.Select(item => (byte)(item-1)).ToArray();
     #endregion >>> Key permutation tables <<<
     private static BitArray[] GenerateSubKeys(byte[] key)
     {
@@ -101,7 +101,7 @@ public static partial class DES_Algorithm
         var key2_Blocks = Enumerable.Range(0, 16).Select(e => new BitArray(48)).ToList();
         for(int i = 0; i < 16; i++)
             for(int ii = 0; ii < 48; ii++)
-                key2_Blocks[i][ii] = key_Blocks[i][PC_2[ii]-1];
+                key2_Blocks[i][ii] = key_Blocks[i][PC_2[ii]];
 
         return key2_Blocks.ToArray();
     }
@@ -123,7 +123,7 @@ public static partial class DES_Algorithm
 
 
 #region >>> Constants 2 <<<
-    private static readonly byte[] IP = {
+    private static readonly byte[] IP = new byte[] {
         58, 50, 42, 34, 26, 18, 10, 2,
         60, 52, 44, 36, 28, 20, 12, 4,
         62, 54, 46, 38, 30, 22, 14, 6,
@@ -132,8 +132,8 @@ public static partial class DES_Algorithm
         59, 51, 43, 35, 27, 19, 11, 3,
         61, 53, 45, 37, 29, 21, 13, 5,
         63, 55, 47, 39, 31, 23, 15, 7,
-    };
-    private static readonly byte[] E = {
+    }.Select(item => (byte)(item-1)).ToArray();
+    private static readonly byte[] E = new byte[] {
         32,  1,  2,  3,  4,  5,
          4,  5,  6,  7,  8,  9,
          8,  9, 10, 11, 12, 13,
@@ -142,7 +142,7 @@ public static partial class DES_Algorithm
         20, 21, 22, 23, 24, 25,
         24, 25, 26, 27, 28, 29,
         28, 29, 30, 31, 32,  1,
-    };
+    }.Select(item => (byte)(item-1)).ToArray();
     private static readonly byte[,,] SBox = {
         {
             { 14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7 },
@@ -186,7 +186,7 @@ public static partial class DES_Algorithm
             { 2, 1, 14, 7, 4, 10, 8, 13, 15, 12, 9, 0, 3, 5, 6, 11 }
         }
     };
-    private static readonly byte[] P = {
+    private static readonly byte[] P = new byte[] {
         16, 7,  20, 21,
         29, 12, 28, 17,
         1,  15, 23, 26,
@@ -195,8 +195,8 @@ public static partial class DES_Algorithm
         32, 27, 3,  9,
         19, 13, 30, 6,
         22, 11, 4,  25
-    };
-    private static readonly byte[] IP_1 = {
+    }.Select(item => (byte)(item-1)).ToArray();
+    private static readonly byte[] IP_1 = new byte[] {
         40, 8, 48, 16, 56, 24, 64, 32,
         39, 7, 47, 15, 55, 23, 63, 31,
         38, 6, 46, 14, 54, 22, 62, 30,
@@ -205,16 +205,17 @@ public static partial class DES_Algorithm
         35, 3, 43, 11, 51, 19, 59, 27,
         34, 2, 42, 10, 50, 18, 58, 26,
         33, 1, 41, 9, 49, 17, 57, 25
-    };
+    }.Select(item => (byte)(item-1)).ToArray();
 #endregion >>> Constants 2 <<<
 
 
-    private static BitArray HashBlock(BitArray[] keys, Span<byte> input, bool inverse = false)
+    private static void HashBlock(BitArray[] keys, Span<byte> input, bool inverse = false)
     {
+        input.Reverse();
         var input_bitArray = new BitArray(input.ToArray());
         var input_IP = new BitArray(64);
         for(int i = 0; i < 64; i++)
-            input_IP[i] = input_bitArray[IP[i]-1];
+            input_IP[i] = input_bitArray[IP[i]];
 
         var(input_L, input_R) = input_IP.Split();
 
@@ -234,7 +235,7 @@ public static partial class DES_Algorithm
             {
                 var R_expanded = new BitArray(48);
                 for(int i = 0; i < 48; i++)
-                    R_expanded[i] = R[E[i]-1]; // E(R[n-1])
+                    R_expanded[i] = R[E[i]]; // E(R[n-1])
                 
                 R_expanded = R_expanded.Xor(key); // K[n] + E(R[n-1])
 
@@ -244,12 +245,12 @@ public static partial class DES_Algorithm
                     int pack = i * 6;
                     // var box = SBox[i];
                     byte S_i = 0;
-                        S_i |= System.Convert.ToByte(result[pack]);
-                        S_i |= (byte)(System.Convert.ToInt32(result[pack + 5]) << 1);
+                        S_i |= System.Convert.ToByte(R_expanded[pack]);
+                        S_i |= (byte)(System.Convert.ToInt32(R_expanded[pack + 5]) << 1);
 
                     byte S_j = 0;
                     for (var k = 0; k < 4; k++)
-                        S_j |= (byte)(System.Convert.ToInt32(result[pack + k + 1]) << k);
+                        S_j |= (byte)(System.Convert.ToInt32(R_expanded[pack + k + 1]) << k);
                     
                     byte fromSBox = SBox[i, S_i, S_j];
 
@@ -259,7 +260,7 @@ public static partial class DES_Algorithm
 
                 var result_P = new BitArray(32);
                 for(int i = 0; i < 32; i++)
-                    result_P[i] = result[P[i]-1];
+                    result_P[i] = result[P[i]];
 
                 return result_P;
 
@@ -270,13 +271,11 @@ public static partial class DES_Algorithm
         var RL = BitArray_Ext.Unite(input_R, input_L);
         var result = new BitArray(64);
         for(int i = 0; i < 64; i++)
-            result[i] = RL[IP_1[i]-1];
-        // BitArray_Ext.UniteInto(input_L, input_R, input_bitArray);
+            result[i] = RL[IP_1[i]];
 
-        // var thingie = InitPermutBlock(input);
-
-
-
-        throw new NotImplementedException();
+        result.ToByteArray().CopyTo(input);
+        input.Reverse();
     }
+
+    // private
 }

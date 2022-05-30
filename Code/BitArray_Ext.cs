@@ -4,6 +4,18 @@ namespace BitArray_Extensions
 {
     public static class BitArray_Ext
     {
+        public static byte[] ToByteArray(this BitArray self)
+        {
+            if(self.Count % 8 is not 0)
+                throw new ArgumentException("Input BitArray's lenght should be divisible by 8!");
+            int lenght = self.Count / 8;
+            byte[] result = new byte[lenght];
+            for(int i = 0; i < lenght; i++)
+                for(int ii = 0; ii < 8; ii++)
+                    result[i] += (byte)(Convert.ToByte(self[i*8 + ii]) << (ii));
+            return result;
+        }
+
         public static (BitArray L, BitArray R) Split(this BitArray self)
         {
             var lenght = self.Length;
