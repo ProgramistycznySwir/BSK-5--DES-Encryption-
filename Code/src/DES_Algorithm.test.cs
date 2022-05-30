@@ -23,21 +23,18 @@ namespace DES_Algorithm
             Assert.Equal(input, output_normalized);
         }
 
-        // [Theory]
-        // [InlineData("CRYPTOGRAPHYOSA", "ROSHARAN", "U2FsdGVkX1/ZP3Wp6RHC/jex85bfEjs9PTmZN659QsQ=")]
-        // [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ROSHARAN")]
-        // [InlineData("CRYPTOGRAPHYOSA", "CONVENIENCE")]
-        // [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "CONVENIENCE")]
-        // public void Hash_Encryption(string input, string key, string expectedOutput)
-        // {
-        //     // Arrange:
-        //     var key_bytes = Encoding.UTF8.GetBytes(key);
-        //     // Act:
-        //     byte[] output = DES_Algorithm.Encrypt(fullKey: key_bytes, input);
-        //     // Assert:
-        //     string output_normalized = Encoding.UTF8.GetString(output);
-        //     Assert.Equal(expectedOutput, output_normalized);
-        // }
+        [Theory]
+        [InlineData("0123456789ABCDEF", "133457799BBCDFF1", "85E813540F0AB405")]
+        public void Hash_Encryption(string input, string key, string expectedOutput)
+        {
+            // Arrange:
+            var key_bytes = Encoding.UTF8.GetBytes(key);
+            // Act:
+            string output = DES_Algorithm.Encrypt(fullKey: key_bytes, input);
+            // Assert:
+            // string output_normalized = Encoding.UTF8.GetString(output);
+            Assert.Equal(expectedOutput, output);
+        }
 
         // [Theory]
         // [InlineData("CRYPTOGRAPHYOSA", "ROSHARAN")]
