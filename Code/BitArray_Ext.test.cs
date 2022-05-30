@@ -37,6 +37,22 @@ namespace BitArray_Extensions
         }
     #endregion >>> BitArray_Ext.Unite() <<<
 
+    // #region >>> BitArray_Ext.Unite() <<<
+    //     [Fact]
+    //     public void UniteInto_ShouldWork()
+    //     {
+    //         // Arrange:
+    //         BitArray L = new BitArray(new byte[]{0b11111111, 0b00000000});
+    //         BitArray R = new BitArray(new byte[]{0b11111111, 0b00000000});
+    //         // Act:
+    //         var result = 
+    //         BitArray_Ext.UnityInto(L, R);
+    //         // Assert:
+    //         var expected = new BitArray(new byte[]{0b11111111, 0b00000000, 0b11111111, 0b00000000});
+    //         Assert.Equal(expected, result);
+    //     }
+    // #endregion >>> BitArray_Ext.Unite() <<<
+
     #region >>> BitArray_Ext.CycleShiftLeft() <<<
         [Fact]
         public void CycleShiftLeft_ShouldConvert128To1()

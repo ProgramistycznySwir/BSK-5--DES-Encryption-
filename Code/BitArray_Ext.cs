@@ -37,12 +37,12 @@ namespace BitArray_Extensions
         /// <summary>
         /// Make sure on your own if out.Lenght == L.Lenght + R.Lenght!!!
         /// </summary>
-        public static void UniteInto(BitArray L, BitArray R, BitArray @out){
-            for(int i = 0; i < L.Length; i++){
-                @out[i] = L[i];
-                @out[L.Length + i] = R[i-L.Length];
-            }
-        }
+        // public static void UniteInto(BitArray L, BitArray R, BitArray @out){
+        //     for(int i = 0; i < L.Length; i++){
+        //         @out[i] = L[i];
+        //         @out[L.Length + i] = R[i-L.Length];
+        //     }
+        // }
         
 
         // Has to be immutable.
