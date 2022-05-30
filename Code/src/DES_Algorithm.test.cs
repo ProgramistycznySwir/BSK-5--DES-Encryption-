@@ -17,12 +17,44 @@ namespace DES_Algorithm
             // Arrange:
             var key_bytes = Encoding.UTF8.GetBytes(key);
             // Act:
-            byte[] output = DES_Algorithm.Decrypt(fullKey: key_bytes, DES_Algorithm.Encrypt(fullKey: key_bytes, input));
+            string output = DES_Algorithm.Decrypt(fullKey: key_bytes, DES_Algorithm.Encrypt(fullKey: key_bytes, input));
             // Assert:
-            string output_normalized = Encoding.UTF8.GetString(output);
+            string output_normalized = output;
             Assert.Equal(input, output_normalized);
         }
-    #endregion >>> BitArray_Ext.Split() <<<
+
+        // [Theory]
+        // [InlineData("CRYPTOGRAPHYOSA", "ROSHARAN", "U2FsdGVkX1/ZP3Wp6RHC/jex85bfEjs9PTmZN659QsQ=")]
+        // [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ROSHARAN")]
+        // [InlineData("CRYPTOGRAPHYOSA", "CONVENIENCE")]
+        // [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "CONVENIENCE")]
+        // public void Hash_Encryption(string input, string key, string expectedOutput)
+        // {
+        //     // Arrange:
+        //     var key_bytes = Encoding.UTF8.GetBytes(key);
+        //     // Act:
+        //     byte[] output = DES_Algorithm.Encrypt(fullKey: key_bytes, input);
+        //     // Assert:
+        //     string output_normalized = Encoding.UTF8.GetString(output);
+        //     Assert.Equal(expectedOutput, output_normalized);
+        // }
+
+        // [Theory]
+        // [InlineData("CRYPTOGRAPHYOSA", "ROSHARAN")]
+        // [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ROSHARAN")]
+        // [InlineData("CRYPTOGRAPHYOSA", "CONVENIENCE")]
+        // [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "CONVENIENCE")]
+        // public void Hash_Decryption(string input, string key, string expectedOutput)
+        // {
+        //     // Arrange:
+        //     var key_bytes = Encoding.UTF8.GetBytes(key);
+        //     // Act:
+        //     byte[] output = DES_Algorithm.Decrypt(fullKey: key_bytes, input);
+        //     // Assert:
+        //     string output_normalized = Encoding.UTF8.GetString(output);
+        //     Assert.Equal(expectedOutput, output_normalized);
+        // }
+    #endregion >>> DES_Algorithm.Hash() <<<
 
     }
 }

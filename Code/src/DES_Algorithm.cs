@@ -1,6 +1,7 @@
 using System.Collections;
 using Array_Extenstions;
 using BitArray_Extensions;
+using static System.Text.Encoding;
 
 
 namespace DES_Algorithm;
@@ -10,13 +11,13 @@ public static partial class DES_Algorithm
 {
     
     // Wrappers:
-    public static byte[] Encrypt(byte[] fullKey, string text)
-        => Encrypt(fullKey, System.Text.Encoding.UTF8.GetBytes(text));
+    public static string Encrypt(byte[] fullKey, string text)
+        => System.Convert.ToBase64String(Encrypt(fullKey, System.Text.Encoding.UTF8.GetBytes(text)));
     public static byte[] Encrypt(byte[] fullKey, byte[] input)
         => Hash(fullKey, input, inverse: false);
 
-    public static byte[] Decrypt(byte[] fullKey, string text)
-        => Decrypt(fullKey, System.Text.Encoding.UTF8.GetBytes(text));
+    public static string Decrypt(byte[] fullKey, string text)
+        => UTF8.GetString(Decrypt(fullKey, System.Convert.FromBase64String(text))).TrimEnd('\0');
     public static byte[] Decrypt(byte[] fullKey, byte[] input)
         => Hash(fullKey, input, inverse: true);
 
