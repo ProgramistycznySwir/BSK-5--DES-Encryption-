@@ -6,19 +6,19 @@ namespace BitArray_Extensions
     public class BitArray_Ext_Test
     {
 
-    #region >>> BitArray_Ext.ToByteArray() <<<
-        [Fact]
-        public void ToByteArray_ShouldWork()
-        {
-            // Arrange:
-            BitArray toConvert = new BitArray(new byte[]{0b00111001});
-            // Act:
-            var result = toConvert.ToByteArray();
-            // Assert:
-            var expected = new byte[]{0b00111001};
-            Assert.Equal(expected, result);
-        }
-    #endregion >>> BitArray_Ext.Split() <<<
+    // #region >>> BitArray_Ext.ToByteArray() <<<
+    //     [Fact]
+    //     public void ToByteArray_ShouldWork()
+    //     {
+    //         // Arrange:
+    //         BitArray toConvert = new BitArray(new byte[]{0b00111001});
+    //         // Act:
+    //         var result = toConvert.ToByteArray();
+    //         // Assert:
+    //         var expected = new byte[]{0b00111001};
+    //         Assert.Equal(expected, result);
+    //     }
+    // #endregion >>> BitArray_Ext.Split() <<<
 
     #region >>> BitArray_Ext.Split() <<<
         [Fact]
@@ -67,30 +67,30 @@ namespace BitArray_Extensions
     //     }
     // #endregion >>> BitArray_Ext.Unite() <<<
 
-    #region >>> BitArray_Ext.CycleShiftLeft() <<<
-        [Fact]
-        public void CycleShiftLeft_ShouldConvert128To1()
-        {
-            // Arrange:
-            var input = new BitArray(new byte[] { 0b1000_0000 });
-            // Act:
-            var result = input.CycleShiftLeft();
-            // Assert:
-            var expected = new BitArray(new byte[]{0b0000_0001 });
-            Assert.Equal(expected, result);
-        }
-        [Fact]
-        public void CycleShiftLeft_ShouldBeImmutable()
-        {
-            // Arrange:
-            var input = new BitArray(new byte[] { 0b1000_0000 });
-            // Act:
-            var result = input.CycleShiftLeft();
-            // Assert:
-            var expected = new BitArray(new byte[] { 0b1000_0000 });
-            Assert.Equal(expected, input);
-        }
-    #endregion >>> BitArray_Ext.CycleShiftLeft() <<<
+    // #region >>> BitArray_Ext.CycleShiftLeft() <<<
+    //     [Fact]
+    //     public void CycleShiftLeft_ShouldConvert128To1()
+    //     {
+    //         // Arrange:
+    //         var input = new BitArray(new byte[] { 0b1000_0000 });
+    //         // Act:
+    //         var result = input.CycleShiftLeft();
+    //         // Assert:
+    //         var expected = new BitArray(new byte[]{0b0000_0001 });
+    //         Assert.Equal(expected, result);
+    //     }
+    //     [Fact]
+    //     public void CycleShiftLeft_ShouldBeImmutable()
+    //     {
+    //         // Arrange:
+    //         var input = new BitArray(new byte[] { 0b1000_0000 });
+    //         // Act:
+    //         var result = input.CycleShiftLeft();
+    //         // Assert:
+    //         var expected = new BitArray(new byte[] { 0b1000_0000 });
+    //         Assert.Equal(expected, input);
+    //     }
+    // #endregion >>> BitArray_Ext.CycleShiftLeft() <<<
 
     }
 }
