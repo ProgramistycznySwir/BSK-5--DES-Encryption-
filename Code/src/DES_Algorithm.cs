@@ -59,6 +59,10 @@ public static partial class DES_Algorithm
         14, 6,  61, 53, 45, 37, 29,
         21, 13, 5,  28, 20, 12, 4,
     }.Select(item => (byte)(item-1)).ToArray();
+    private static readonly byte[] ShiftBits = {
+        1, 1, 2, 2, 2, 2, 2, 2,
+        1, 2, 2, 2, 2, 2, 2, 1
+    };
     private static readonly byte[] PC_2 = new byte[] {
         14, 17, 11, 24,  1,  5,
          3, 28, 15,  6, 21, 10,
@@ -225,8 +229,8 @@ public static partial class DES_Algorithm
             //TODO: Prolly wrong.
             // L[n] = R[n-1]
             // R[n] = L[n-1] XOR f(R[n-1], key[n])
-            input_L.CopyTo(temp);
-            input_R.CopyTo(input_L);
+            input_L.CopyTo(ref temp);
+            input_R.CopyTo(ref input_L);
 
             var key = keys[inverse ? 15 - i : i];
             input_R = temp.Xor(F(key, input_L));
