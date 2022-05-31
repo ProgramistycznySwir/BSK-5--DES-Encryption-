@@ -39,5 +39,7 @@ Log("");
 var rawResultDecrypted_my = DES_Algorithm.DES_Algorithm.Decrypt(Encoding.UTF8.GetBytes("ROSHARAN"), rawResult_my);
 var resultDecrypted_my = rawResultDecrypted_my;
 Log(resultDecrypted_my);
+Log("");
+Log(Code.src.DES.Decrypt(rawResult, "ROSHARAN"));
 
 // Code.src.DES.Decrypt("CRYPTOGRAPHYOSA", "ROSHARAN");
